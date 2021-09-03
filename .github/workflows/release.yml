@@ -7,7 +7,7 @@ on:
       - test-*
 
 env:
-  NODE_VERSION: 14
+  NODE_VERSION: 15
   cache-version: v1
 
 jobs:
