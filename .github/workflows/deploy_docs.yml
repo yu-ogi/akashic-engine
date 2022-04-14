@@ -14,7 +14,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Checkout (v3)
@@ -47,11 +48,6 @@ jobs:
         run: |
           npm install
           npm run doc
-      - name: Checkout (main)
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          path: main
       - name: Copy reference docs
         run: |
           mkdir -p public
