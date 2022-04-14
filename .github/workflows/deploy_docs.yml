@@ -65,7 +65,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [build_v3, build_v2, build_v1]
+    needs: [build_doc_v3, build_doc_v2, build_doc_v1]
     steps:
       - name: Setup GitHub User
         run: |
