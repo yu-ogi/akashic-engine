@@ -74,9 +74,7 @@ jobs:
       - name: Copy reference docs
         run: |
           pwd
-          ls ${{ env.V3_DIR }}
-          ls ${{ env.V2_DIR }}
-          ls ${{ env.V1_DIR }}
+          ls -l
           mkdir -p public
           cp -r ${{ env.V3_DIR }}/doc/html/ public/${{ env.V3_DIR }}/
           cp -r ${{ env.V2_DIR }}/doc/html/ public/${{ env.V2_DIR }}/
