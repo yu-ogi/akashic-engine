@@ -2,7 +2,9 @@ name: Deploy API Document on GitHub Pages
 
 on:
   push:
-    branches: [main, v1-main, v2-main, deploy-api-reference]
+    branches:
+      - main
+      - deploy-api-reference
 
 env:
   NODE_VERSION: '16'
@@ -23,32 +25,32 @@ jobs:
         with:
           ref: main
           path: ${{ env.V3_DIR }}
-      - name: Install and Build (v3)
-        working-directory: ${{ env.V3_DIR }}
-        run: |
-          npm ci
-          npm run doc
       - name: Checkout (v2)
         uses: actions/checkout@v3
         with:
           ref: v2-master
           path: ${{ env.V2_DIR }}
-      - name: Install and Build (v2)
-        working-directory: ${{ env.V2_DIR }}
-        run: |
-          npm ci
-          npm run doc
       - name: Checkout (v1)
         uses: actions/checkout@v3
         with:
           ref: v1-master
           path: ${{ env.V1_DIR }}
+      - name: Install and Build (v3)
+        working-directory: ${{ env.V3_DIR }}
+        run: |
+          npm ci
+          npm run doc
+      - name: Install and Build (v2)
+        working-directory: ${{ env.V2_DIR }}
+        run: |
+          npm ci
+          npm run doc
       - name: Install and Build (v1)
         working-directory: ${{ env.V1_DIR }}
         run: |
           npm install
           npm run doc
-      - name: Copy reference docs
+      - name: Copy API docs
         run: |
           mkdir -p public
           cp -r ${{ env.V3_DIR }}/doc/html/ public/${{ env.V3_DIR }}/
