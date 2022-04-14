@@ -2,7 +2,7 @@ name: Deploy API Document on GitHub Pages
 
 on:
   push:
-    branches: [main, v1-main, v2-main]
+    branches: [main, v1-main, v2-main, deploy-api-reference]
 
 env:
   NODE_VERSION: '16'
