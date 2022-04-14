@@ -1,0 +1,77 @@
+name: Deploy API Document on GitHub Pages
+
+on:
+  push:
+    branches: [main, v1-main, v2-main]
+
+env:
+  NODE_VERSION: '16'
+  V3_DIR: 'v3'
+  V2_DIR: 'v2'
+  V1_DIR: 'v1'
+
+jobs:
+  build_doc_v3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          path: ${{ env.V3_DIR }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.V3_DIR }}/package-lock.json
+      - name: Install and Build
+        working-directory: ${{ env.V3_DIR }}
+        run: |
+          npm ci
+          npm run doc
+
+  build_doc_v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          path: ${{ env.V2_DIR }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.V2_DIR }}/package-lock.json
+      - name: Install and Build
+        working-directory: ${{ env.V2_DIR }}
+        run: |
+          npm ci
+          npm run doc
+
+  build_doc_v1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          path: ${{ env.V1_DIR }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install and Build
+        working-directory: ${{ env.V1_DIR }}
+        run: |
+          npm install
+          npm run doc
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build_v3, build_v2, build_v1]
+    steps:
+      - name: Setup GitHub User
+        run: |
+          git config user.name 'github-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
