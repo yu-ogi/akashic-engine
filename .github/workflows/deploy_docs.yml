@@ -61,7 +61,7 @@ jobs:
         run: |
           for dir in ${{ env.V1_DIR }} ${{ env.V2_DIR }} ${{ env.V3_DIR }}
           do
-            if [ ! -e ${{ env.PUBLIC_DIR }}/${dir}/index.htm ]; then
+            if [ ! -e ${{ env.PUBLIC_DIR }}/${dir}/index.html ]; then
               echo "'${{ env.PUBLIC_DIR }}/${dir}/index.html' not found."
               exit 1;
             fi
