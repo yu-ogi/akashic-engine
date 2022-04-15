@@ -56,6 +56,15 @@ jobs:
           cp -r ${{ env.V3_DIR }}/doc/html/ public/${{ env.V3_DIR }}/
           cp -r ${{ env.V2_DIR }}/doc/html/ public/${{ env.V2_DIR }}/
           cp -r ${{ env.V1_DIR }}/doc/html/ public/${{ env.V1_DIR }}/
+      - name: Check API docs
+        run: |
+          for dir in ${{ env.V1_DIR }} ${{ env.V2_DIR }} ${{ env.V3_DIR }}
+          do
+            if [ ! public/${dir}/index.html ]; then
+              echo "'public/${dir}/index.html' not found."
+              exit 1;
+            fi
+          done
       - name: Deploy on gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
