@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - main
+      - v2-main
       - deploy-api-reference
 
 env:
   NODE_VERSION: '16'
-  PUBLIC_DIR: "public"
-  V3_DIR: 'v3'
-  V2_DIR: 'v2'
-  V1_DIR: 'v1'
+  PUBLIC_DIR: public
+  V3_DIR: v3
+  V2_DIR: v2
+  V1_DIR: v1
 
 jobs:
   deploy:
