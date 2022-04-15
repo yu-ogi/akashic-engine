@@ -8,6 +8,7 @@ on:
 
 env:
   NODE_VERSION: '16'
+  PUBLIC_DIR: "public"
   V3_DIR: 'v3'
   V2_DIR: 'v2'
   V1_DIR: 'v1'
@@ -52,16 +53,16 @@ jobs:
           npm run doc
       - name: Copy API docs
         run: |
-          mkdir -p public
-          cp -r ${{ env.V3_DIR }}/doc/html/ public/${{ env.V3_DIR }}/
-          cp -r ${{ env.V2_DIR }}/doc/html/ public/${{ env.V2_DIR }}/
-          cp -r ${{ env.V1_DIR }}/doc/html/ public/${{ env.V1_DIR }}/
+          mkdir -p ${{ env.PUBLIC_DIR }}
+          cp -r ${{ env.V3_DIR }}/doc/html/ ${{ env.PUBLIC_DIR }}/${{ env.V3_DIR }}/
+          cp -r ${{ env.V2_DIR }}/doc/html/ ${{ env.PUBLIC_DIR }}/${{ env.V2_DIR }}/
+          cp -r ${{ env.V1_DIR }}/doc/html/ ${{ env.PUBLIC_DIR }}/${{ env.V1_DIR }}/
       - name: Check API docs
         run: |
           for dir in ${{ env.V1_DIR }} ${{ env.V2_DIR }} ${{ env.V3_DIR }}
           do
-            if [ ! public/${dir}/index.html ]; then
-              echo "'public/${dir}/index.html' not found."
+            if [ ! ${{ env.PUBLIC_DIR }}/${dir}/index.html ]; then
+              echo "'${{ env.PUBLIC_DIR }}/${dir}/index.html' not found."
               exit 1;
             fi
           done
@@ -69,6 +70,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ${{ env.PUBLIC_DIR }}
           user_name: 'github-actions'
           user_email: '41898282+github-actions[bot]@users.noreply.github.com'
